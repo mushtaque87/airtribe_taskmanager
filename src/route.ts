@@ -74,4 +74,24 @@ router.put('/tasks/:id', (req, res) => {
   }
 });
 
+router.delete('/tasks/:id', (req, res) => {
+  const idSearched = req.params.id;
+  log.info('idSearched', idSearched);
+  try {
+    // Find the index of the object you want to replace
+    const index = tasks.findIndex(task => task.id == Number(idSearched));
+    log.info('index', index);
+    //log.info('taskSearched', taskSearched);
+    if (index >= 0) {
+      // Replace the object at the index with a new object
+      tasks.splice(index, 1);
+      return res.status(200).json(tasks);
+    } else {
+      return res.status(400).json('Task not found');
+    }
+  } catch (error) {
+    return res.status(500).json('Endpoint Failed');
+  }
+});
+
 export default router;
