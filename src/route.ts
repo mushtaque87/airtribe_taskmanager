@@ -1,29 +1,54 @@
 import express from 'express';
-import { STATUS } from '../utils/types';
+import { PRIORITY, STATUS } from '../utils/types';
 import log from '../utils/logs';
 import validator from '../utils/validator';
+import { Task } from '../model/Task';
 const router = express.Router();
 
-const tasks = [
+const tasks: Task[] = [
   {
     id: 1,
     title: 'Study',
     description: 'Study is important',
     status: STATUS.TOSTART,
-    priority: 'HIGH',
+    priority: PRIORITY.HIGH,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: 2,
     title: 'Work',
     description: 'Work for Office',
     status: STATUS.DONE,
-    priority: 'HIGH',
+    priority: PRIORITY.LOW,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ];
 
 router.get('/tasks', (req, res) => {
   // Handle the REST request and send the response
-  return res.status(200).json(tasks);
+  const { sort } = req.query;
+  try {
+    if (tasks?.length) {
+      let sortedTasks = tasks;
+      if (sort === 'createdAt') {
+        sortedTasks = tasks.sort(
+          (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+        );
+        return res.status(200).json(sortedTasks);
+      }
+      if (sort === 'id') {
+        sortedTasks = tasks.sort((a, b) => a.id - b.id);
+        return res.status(200).json(sortedTasks);
+      }
+      return res.status(200).json(tasks);
+    } else {
+      return res.status(400).json('No tasks found');
+    }
+  } catch (error) {
+    return res.status(500).json('Endpoint Failed');
+  }
 });
 
 router.get('/tasks/:id', (req, res) => {
@@ -54,6 +79,8 @@ router.post('/tasks', (req, res) => {
     return res.status(400).json(`Task already exists with id ${taskId}`);
   }
   if (taskValidity.status) {
+    userProvidedTasks.createdAt = new Date();
+    userProvidedTasks.updatedAt = new Date();
     tasks.push(userProvidedTasks);
     return res.status(200).json(tasks);
   } else {
@@ -73,6 +100,8 @@ router.put('/tasks/:id', (req, res) => {
     const taskValidity = validator.validateTask(userProvidedTasks);
     if (taskValidity.status && index >= 0) {
       // Replace the object at the index with a new object
+      userProvidedTasks.createdAt = tasks[index].createdAt;
+      userProvidedTasks.updatedAt = new Date();
       tasks.splice(index, 1, userProvidedTasks);
       return res.status(200).json(tasks);
     } else {
