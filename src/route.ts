@@ -103,4 +103,25 @@ router.delete('/tasks/:id', (req, res) => {
   }
 });
 
+router.get('/tasks/priority/:level', (req, res) => {
+  const levelSearched = req.params.level;
+  log.info('levelSearched', levelSearched);
+  // Handle the REST request and send the response
+  try {
+    const taskSearched = tasks.filter(task => {
+      if (task.priority == levelSearched) {
+        return task;
+      }
+    });
+    log.info('taskSearched', taskSearched);
+    if (taskSearched?.length) {
+      return res.status(200).json(taskSearched);
+    } else {
+      return res.status(400).json(`Tasks with ${levelSearched} not found`);
+    }
+  } catch (error) {
+    return res.status(500).json('Endpoint Failed');
+  }
+});
+
 export default router;
