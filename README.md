@@ -135,7 +135,7 @@ _Delete a task by its ID._
 _airtribe_taskmanager.json_
 
 ![Postman Collection]
-(request_collection.png)
+(/assets/request_collection.png)
 
 ## License
 
