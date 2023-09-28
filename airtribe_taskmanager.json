@@ -1,0 +1,84 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "airtribe_taskmanager",
+    "dateExported": "2023-09-28T04:24:51.947Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "0f7c67a1-7607-4090-a977-2ac5f51ce828",
+            "colId": "f686cc06-69bc-4a3f-8fea-4649bf5a5c96",
+            "containerId": "",
+            "name": "http://localhost:9000/tasks",
+            "url": "http://localhost:9000/tasks",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-09-27T04:37:00.887Z",
+            "modified": "2023-09-27T04:37:00.887Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "eb1886bc-3e54-4566-a93e-c3ef4a98ed34",
+            "colId": "f686cc06-69bc-4a3f-8fea-4649bf5a5c96",
+            "containerId": "",
+            "name": "http://localhost:9000/tasks",
+            "url": "http://localhost:9000/tasks",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-09-27T04:41:16.333Z",
+            "modified": "2023-09-27T15:38:39.623Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "name": "Host",
+                    "value": "localhost"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\" : 3,\n  \"title\": \"Play\",\n  \"description\": \"I love Playing\",\n  \"status\": \"TOSTART\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "b9faf65a-a513-4519-b999-c24ea116dc33",
+            "colId": "f686cc06-69bc-4a3f-8fea-4649bf5a5c96",
+            "containerId": "",
+            "name": "http://localhost:9000/tasks/1",
+            "url": "http://localhost:9000/tasks/1",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-09-27T14:28:41.029Z",
+            "modified": "2023-09-27T14:28:41.029Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "89ee0dab-aea3-4c19-988a-db385bb54d6a",
+            "colId": "f686cc06-69bc-4a3f-8fea-4649bf5a5c96",
+            "containerId": "",
+            "name": "http://localhost:9000/tasks/2",
+            "url": "http://localhost:9000/tasks/2",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2023-09-27T14:52:40.977Z",
+            "modified": "2023-09-28T04:24:48.158Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\" : 2,\n  \"title\": \"Play\",\n  \"description\": \"Playng is good\",\n  \"status\": \"TOSTART\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}

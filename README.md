@@ -3,10 +3,11 @@
 This is a simple task manager app built with Node.js, Express, and MongoDB.
 
 Installation
-Clone the repository: git clone https://github.com/mushtaque87/airtribe_taskmanager.git
-Install the dependencies: npm install or yarn install
-Set the environment variables: cp .env.example .env and update the values in the .env file
-Start the server: npm server or yarn server
+
+- Clone the repository: git clone https://github.com/mushtaque87/airtribe_taskmanager.git
+- Install the dependencies: npm install or yarn install
+- Set the environment variables: cp .env.example .env and update the values in the .env file
+- Start the server: npm server or yarn server
 
 ## API Endpoints
 
@@ -126,13 +127,16 @@ _Delete a task by its ID._
 
 **Request**
 `DELETE /tasks/1`
+
 **Response**
 "Task deleted successfully"
+
+**Postman collection Included in the project repo**
+_airtribe_taskmanager.json_
+
+![Postman Collection]
+(request_collection.png)
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-```
-
-```
