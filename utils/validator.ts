@@ -8,7 +8,8 @@ class Validator {
       task?.hasOwnProperty('id') &&
       task?.hasOwnProperty('title') &&
       task?.hasOwnProperty('description') &&
-      task?.hasOwnProperty('status')
+      task?.hasOwnProperty('status') &&
+      task?.hasOwnProperty('priority')
     ) {
       return {
         status: true,

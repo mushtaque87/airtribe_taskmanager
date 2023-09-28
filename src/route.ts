@@ -10,12 +10,14 @@ const tasks = [
     title: 'Study',
     description: 'Study is important',
     status: STATUS.TOSTART,
+    priority: 'HIGH',
   },
   {
     id: 2,
     title: 'Work',
     description: 'Work for Office',
     status: STATUS.DONE,
+    priority: 'HIGH',
   },
 ];
 
@@ -45,11 +47,17 @@ router.get('/tasks/:id', (req, res) => {
 
 router.post('/tasks', (req, res) => {
   const userProvidedTasks = req.body;
-  if (validator.validateTask(userProvidedTasks).status) {
+  const taskValidity = validator.validateTask(userProvidedTasks);
+  const taskId = req.body.id;
+  const index = tasks.findIndex(task => task.id == Number(taskId));
+  if (index >= 0) {
+    return res.status(400).json(`Task already exists with id ${taskId}`);
+  }
+  if (taskValidity.status) {
     tasks.push(userProvidedTasks);
     return res.status(200).json(tasks);
   } else {
-    return res.status(400).json(validator.validateTask(userProvidedTasks));
+    return res.status(400).json(`${taskValidity.message}`);
   }
 });
 
@@ -62,12 +70,13 @@ router.put('/tasks/:id', (req, res) => {
     const index = tasks.findIndex(task => task.id == Number(idSearched));
     log.info('index', index);
     //log.info('taskSearched', taskSearched);
-    if (validator.validateTask(userProvidedTasks).status && index >= 0) {
+    const taskValidity = validator.validateTask(userProvidedTasks);
+    if (taskValidity.status && index >= 0) {
       // Replace the object at the index with a new object
       tasks.splice(index, 1, userProvidedTasks);
       return res.status(200).json(tasks);
     } else {
-      return res.status(400).json('Task not found');
+      return res.status(400).json(`Task not found or ${taskValidity.message}`);
     }
   } catch (error) {
     return res.status(500).json('Endpoint Failed');
