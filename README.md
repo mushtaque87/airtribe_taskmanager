@@ -1,12 +1,11 @@
 # Task Manager App
 
-This is a simple task manager app built with Node.js, Express, and MongoDB.
+This is a simple task manager app built with Node.js, Express, and In Memory Persistance.
 
 Installation
 
 - Clone the repository: git clone https://github.com/mushtaque87/airtribe_taskmanager.git
 - Install the dependencies: npm install or yarn install
-- Set the environment variables: cp .env.example .env and update the values in the .env file
 - Start the server: npm server or yarn server
 
 ## API Endpoints
