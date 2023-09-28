@@ -85,7 +85,7 @@ router.delete('/tasks/:id', (req, res) => {
     if (index >= 0) {
       // Replace the object at the index with a new object
       tasks.splice(index, 1);
-      return res.status(200).json(tasks);
+      return res.status(200).json('Task deleted successfully');
     } else {
       return res.status(400).json('Task not found');
     }
