@@ -1,37 +1,31 @@
 import express from 'express';
-import { PRIORITY, STATUS } from './utils/types';
-import log from './utils/logs';
-import validator from './utils/validator';
-import { Task } from './model/Task';
+import { PRIORITY, STATUS } from '../utils/types';
+import log from '../utils/logs';
+import validator from '../utils/validator';
+import { Task } from '../model/taskModel';
 import {
   createTask,
   deleteTask,
   getTaskById,
+  // getTaskById,
   getTasks,
-} from './implementaton/task_impl';
+  updateTask,
+  // updateTask,
+} from '../controllers/taskController';
+
+//import { getTasks, searchTasks, createTask, deleteTask } from '../controllers/taskController';
+
 const router = express.Router();
 
-// const tasks: Task[] = [
-//   {
-//     id: 1,
-//     title: 'Study',
-//     description: 'Study is important',
-//     status: STATUS.TOSTART,
-//     priority: PRIORITY.HIGH,
-//     createdAt: new Date(),
-//     updatedAt: new Date(),
-//   },
-//   {
-//     id: 2,
-//     title: 'Work',
-//     description: 'Work for Office',
-//     status: STATUS.DONE,
-//     priority: PRIORITY.LOW,
-//     createdAt: new Date(),
-//     updatedAt: new Date(),
-//   },
-// ];
+router.get('/tasks', getTasks);
+router.get('/tasks/:id', getTaskById);
+router.post('/tasks', createTask);
+router.put('/tasks/:id', updateTask);
+router.delete('/tasks/:id', deleteTask);
 
+export default router;
+
+/*
 router.get('/tasks', async (req, res) => {
   // Handle the REST request and send the response
   const { sort } = req.query;
@@ -179,3 +173,4 @@ router.get('/tasks/priority/:level', async (req, res) => {
 });
 
 export default router;
+*/

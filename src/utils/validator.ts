@@ -1,5 +1,4 @@
-import { Task } from '../model/Task';
-
+import { Task } from '../interfaces/task.interface';
 class Validator {
   // This class is used to validate the data that is being sent to the server
   static validateTask(task: Task) {
