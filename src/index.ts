@@ -1,16 +1,19 @@
 const PORT = 9000;
 import http from 'http';
-import log from '../utils/logs';
+import log from './utils/logs';
 import router from './route';
 import express from 'express';
 import bodyParser, { json } from 'body-parser';
 import cors from 'cors';
+import { connect } from './db';
 
 const app = express();
 // Our httpServer handles incoming requests to our Express app.
 // Below, we tell Apollo Server to "drain" this httpServer,
 // enabling our servers to shut down gracefully.
 const httpServer = http.createServer(app);
+
+connect();
 
 app.get('/', (req, res) => {
   return res

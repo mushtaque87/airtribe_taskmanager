@@ -1,34 +1,42 @@
 import express from 'express';
-import { PRIORITY, STATUS } from '../utils/types';
-import log from '../utils/logs';
-import validator from '../utils/validator';
-import { Task } from '../model/Task';
+import { PRIORITY, STATUS } from './utils/types';
+import log from './utils/logs';
+import validator from './utils/validator';
+import { Task } from './model/Task';
+import {
+  createTask,
+  deleteTask,
+  getTaskById,
+  getTasks,
+} from './implementaton/task_impl';
 const router = express.Router();
 
-const tasks: Task[] = [
-  {
-    id: 1,
-    title: 'Study',
-    description: 'Study is important',
-    status: STATUS.TOSTART,
-    priority: PRIORITY.HIGH,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: 2,
-    title: 'Work',
-    description: 'Work for Office',
-    status: STATUS.DONE,
-    priority: PRIORITY.LOW,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+// const tasks: Task[] = [
+//   {
+//     id: 1,
+//     title: 'Study',
+//     description: 'Study is important',
+//     status: STATUS.TOSTART,
+//     priority: PRIORITY.HIGH,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+//   {
+//     id: 2,
+//     title: 'Work',
+//     description: 'Work for Office',
+//     status: STATUS.DONE,
+//     priority: PRIORITY.LOW,
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//   },
+// ];
 
-router.get('/tasks', (req, res) => {
+router.get('/tasks', async (req, res) => {
   // Handle the REST request and send the response
   const { sort } = req.query;
+  const tasks = await getTasks();
+  log.info('Task from DB', tasks);
   try {
     if (tasks?.length) {
       let sortedTasks = tasks;
@@ -51,14 +59,22 @@ router.get('/tasks', (req, res) => {
   }
 });
 
-router.get('/tasks/:id', (req, res) => {
+router.get('/tasks/:id', async (req, res) => {
   // Handle the REST request and send the response
+
   try {
-    const taskSearched = tasks.filter(task => {
-      if (task.id == Number(req.params.id)) {
-        return task;
-      }
-    });
+    // const tasks = await getTasks();
+    // const taskSearched = tasks.filter(task => {
+    //   if (task.id == Number(req.params.id)) {
+    //     return task;
+    //   }
+    // });
+    //log.info('id searcged', Number(req.params.id));
+    //const taskId = req.params.id;
+    const idSearched = req.params.id;
+    log.info('idSearched', idSearched);
+
+    const taskSearched = await getTaskById(Number(idSearched));
     log.info('taskSearched', taskSearched);
     if (taskSearched?.length) {
       return res.status(200).json(taskSearched);
@@ -70,9 +86,10 @@ router.get('/tasks/:id', (req, res) => {
   }
 });
 
-router.post('/tasks', (req, res) => {
+router.post('/tasks', async (req, res) => {
   const userProvidedTasks = req.body;
   const taskValidity = validator.validateTask(userProvidedTasks);
+  let tasks = await getTasks();
   const taskId = req.body.id;
   const index = tasks.findIndex(task => task.id == Number(taskId));
   if (index >= 0) {
@@ -81,18 +98,22 @@ router.post('/tasks', (req, res) => {
   if (taskValidity.status) {
     userProvidedTasks.createdAt = new Date();
     userProvidedTasks.updatedAt = new Date();
-    tasks.push(userProvidedTasks);
+    // tasks.push(userProvidedTasks);
+    const taskId = await createTask(userProvidedTasks);
+    log.info('taskId **', taskId);
+    tasks = await getTasks();
     return res.status(200).json(tasks);
   } else {
     return res.status(400).json(`${taskValidity.message}`);
   }
 });
 
-router.put('/tasks/:id', (req, res) => {
+router.put('/tasks/:id', async (req, res) => {
   const userProvidedTasks = req.body;
   const idSearched = req.params.id;
   log.info('idSearched', idSearched);
   try {
+    const tasks = await getTasks();
     // Find the index of the object you want to replace
     const index = tasks.findIndex(task => task.id == Number(idSearched));
     log.info('index', index);
@@ -112,31 +133,35 @@ router.put('/tasks/:id', (req, res) => {
   }
 });
 
-router.delete('/tasks/:id', (req, res) => {
+router.delete('/tasks/:id', async (req, res) => {
   const idSearched = req.params.id;
   log.info('idSearched', idSearched);
   try {
+    //const tasks = await getTasks();
     // Find the index of the object you want to replace
-    const index = tasks.findIndex(task => task.id == Number(idSearched));
-    log.info('index', index);
-    //log.info('taskSearched', taskSearched);
-    if (index >= 0) {
-      // Replace the object at the index with a new object
-      tasks.splice(index, 1);
-      return res.status(200).json('Task deleted successfully');
-    } else {
-      return res.status(400).json('Task not found');
-    }
+    // const index = tasks.findIndex(task => task._id == Number(idSearched));
+    // log.info('index', index);
+    // //log.info('taskSearched', taskSearched);
+    // if (index >= 0) {
+    // Replace the object at the index with a new object
+    //tasks.splice(index, 1);
+    const deleted = await deleteTask(idSearched);
+    log.info('deleted **', deleted);
+    return res.status(200).json('Task deleted successfully');
+    // } else {
+    //   return res.status(400).json('Task not found');
+    // }
   } catch (error) {
     return res.status(500).json('Endpoint Failed');
   }
 });
 
-router.get('/tasks/priority/:level', (req, res) => {
+router.get('/tasks/priority/:level', async (req, res) => {
   const levelSearched = req.params.level;
   log.info('levelSearched', levelSearched);
   // Handle the REST request and send the response
   try {
+    const tasks = await getTasks();
     const taskSearched = tasks.filter(task => {
       if (task.priority == levelSearched) {
         return task;

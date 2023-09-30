@@ -5,7 +5,7 @@ class Validator {
   static validateTask(task: Task) {
     if (
       // Check if the task has all the required properties
-      task?.hasOwnProperty('id') &&
+
       task?.hasOwnProperty('title') &&
       task?.hasOwnProperty('description') &&
       task?.hasOwnProperty('status') &&

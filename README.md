@@ -131,7 +131,7 @@ _Delete a task by its ID._
 "Task deleted successfully"
 
 **Postman collection Included in the project repo**
-_airtribe_taskmanager.json_
+https://pyypl-automation.postman.co/workspace/Team-Workspace~7c9314e6-3447-4b31-8377-c1c5e4bfe632/folder/29807680-7f907699-1980-414e-9c49-b315c52b8f39?action=share&creator=29807680&ctx=documentation
 
 ![Postman Collection]
 (/assets/request_collection.png)
